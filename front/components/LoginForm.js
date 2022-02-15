@@ -1,21 +1,35 @@
 import React, { useCallback, useState } from 'react';
 import { Button, Form, Input } from 'antd'
 import Link from 'next/link';
+import styled from 'styled-components';
 
-const LoginForm = () => {
+const ButtonWrapper = styled.div`
+margin-top: 10px;
+`;
+
+const FormWrapper = styled(Form)`
+    padding: 10px;
+`;
+
+const LoginForm = ({setLogin}) => {
     const [id, setId] = useState('');
     const [pwd, setPwd] = useState('');
 
-    const onChangeId = useCallback(() => {
+    const onChangeId = useCallback((e) => {
         setId(e.target.value);
     }, []);
 
-    const onChangePwd = useCallback(() => {
+    const onChangePwd = useCallback((e) => {
         setPwd(e.target.value);
     }, []);
 
+    const onSubmitForm = useCallback(() => {
+        console.log(id, pwd);
+        setLogin(true);
+    }, [id, pwd]);
+
     return (
-        <Form>
+        <FormWrapper onFinish={onSubmitForm}>
             <div>
                 <label htmlFor='user-id'>아이디</label>
                 <br/>
@@ -25,11 +39,11 @@ const LoginForm = () => {
                 <label htmlFor='user-password' >비밀번호</label>
                 <Input name='user-password' type='password' value={pwd} onChange={onChangePwd} required />
             </div>
-            <div>
+            <ButtonWrapper>
                 <Button type='primary' htmlType='submit' loading={false}>로그인</Button>
                 <Link href='/signup'><a><Button>회원가입</Button></a></Link>
-            </div>
-        </Form>
+            </ButtonWrapper>
+        </FormWrapper>
     );
 }
 
